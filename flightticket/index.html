@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyBook | Flight Booking</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1769ff;
+            --primary-dark: #0849c7;
+            --text: #17233d;
+            --muted: #778198;
+            --border: #e6eaf1;
+            --white: #ffffff;
+            --background: #f5f7fc;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        button, input, select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* NAVIGATION */
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 7%;
+            background: white;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #566078;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .login-btn {
+            border: 1px solid var(--border);
+            background: white;
+            padding: 10px 22px;
+            border-radius: 10px;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* HERO SECTION */
+
+        .hero {
+            min-height: 440px;
+            padding: 65px 7% 120px;
+            color: white;
+            background:
+                linear-gradient(
+                    110deg,
+                    rgba(5, 30, 77, 0.88),
+                    rgba(23, 105, 255, 0.45)
+                ),
+                url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=85")
+                center 48% / cover;
+        }
+
+        .hero-content {
+            max-width: 750px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 7px 14px;
+            border: 1px solid rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.12);
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(35px, 5vw, 57px);
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            color: #e5edff;
+            font-size: 16px;
+            max-width: 500px;
+        }
+
+        /* BOOKING SECTION */
+
+        .booking-wrapper {
+            max-width: 1200px;
+            margin: -75px auto 0;
+            padding: 0 24px;
+            position: relative;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 18px 55px rgba(24, 46, 91, 0.12);
+        }
+
+        .trip-options {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .trip-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .trip-options input {
+            accent-color: var(--primary);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1.3fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .field {
+            position: relative;
+            min-width: 0;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            min-width: 0;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 13px 12px;
+            color: var(--text);
+            background: white;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(23,105,255,0.09);
+        }
+
+        .location-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .location-row input {
+            flex: 1;
+            width: 0;
+        }
+
+        .swap-btn {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border: 1px solid #dce5ff;
+            border-radius: 50%;
+            color: var(--primary);
+            background: #edf3ff;
+            font-size: 18px;
+        }
+
+        .swap-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .search-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        .search-btn {
+            border: none;
+            background: var(--primary);
+            color: white;
+            border-radius: 11px;
+            padding: 14px 35px;
+            font-weight: 700;
+            box-shadow: 0 7px 18px rgba(23,105,255,0.22);
+            transition: 0.2s;
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* MAIN CONTENT */
+
+        .container {
+            max-width: 1200px;
+            margin: 65px auto;
+            padding: 0 24px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .section-heading h2 {
+            font-size: 27px;
+            letter-spacing: -0.6px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .text-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* DESTINATION CARDS */
+
+        .destination-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .destination-card {
+            position: relative;
+            height: 245px;
+            overflow: hidden;
+            border-radius: 17px;
+            background: #dce6f5;
+            cursor: pointer;
+            box-shadow: 0 5px 18px rgba(20,40,80,0.06);
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .destination-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .destination-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                transparent 25%,
+                rgba(0,0,0,0.72)
+            );
+        }
+
+        .destination-info {
+            position: absolute;
+            z-index: 1;
+            bottom: 17px;
+            left: 17px;
+            color: white;
+        }
+
+        .destination-info h3 {
+            font-size: 20px;
+        }
+
+        .destination-info p {
+            font-size: 13px;
+            color: #e5e9f1;
+        }
+
+        /* RESULTS */
+
+        #results-section {
+            display: none;
+            margin-top: 60px;
+        }
+
+        .results-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .flight-card {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr auto;
+            align-items: center;
+            gap: 20px;
+            padding: 23px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+        }
+
+        .airline-name {
+            font-weight: 700;
+        }
+
+        .airline-name small {
+            display: block;
+            color: var(--muted);
+            font-weight: 400;
+            font-size: 12px;
+        }
+
+        .flight-time {
+            font-size: 21px;
+            font-weight: 750;
+        }
+
+        .flight-detail {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .flight-duration {
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .flight-line {
+            width: 100%;
+            height: 1px;
+            background: #cbd4e4;
+            margin: 7px 0;
+            position: relative;
+        }
+
+        .flight-line::after {
+            content: "✈";
+            position: absolute;
+            right: 45%;
+            top: -12px;
+            color: var(--primary);
+            background: white;
+            padding: 0 5px;
+            font-size: 16px;
+        }
+
+        .flight-price {
+            font-size: 23px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .book-btn {
+            border: none;
+            background: #eaf1ff;
+            color: var(--primary);
+            padding: 11px 18px;
+            border-radius: 9px;
+            font-weight: 700;
+        }
+
+        .book-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .results-note {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        /* BENEFITS */
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 65px;
+        }
+
+        .benefit-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .benefit-icon {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            background: #edf3ff;
+            border-radius: 12px;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .benefit-card h3 {
+            margin-bottom: 7px;
+            font-size: 17px;
+        }
+
+        .benefit-card p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #111d36;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 75px;
+        }
+
+        footer p {
+            color: #aab5cb;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        /* RESPONSIVE DESIGN */
+
+        @media (max-width: 900px) {
+            .form-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .destination-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .flight-card {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .flight-price {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 18px 5%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 55px 6% 115px;
+                min-height: 390px;
+            }
+
+            .booking-wrapper {
+                padding: 0 14px;
+            }
+
+            .booking-card {
+                padding: 22px 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading h2 {
+                font-size: 23px;
+            }
+
+            .destination-grid {
+                gap: 12px;
+            }
+
+            .destination-card {
+                height: 190px;
+            }
+
+            .destination-info {
+                left: 12px;
+                bottom: 12px;
+            }
+
+            .destination-info h3 {
+                font-size: 17px;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+
+            .flight-card {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px 10px;
+                padding: 18px 14px;
+            }
+
+            .flight-card > :last-child {
+                grid-column: 1 / -1;
+            }
+
+            .flight-card .book-btn {
+                width: 100%;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="logo">Sky<span>Book.</span></div>
+
+        <div class="nav-links">
+            <a href="#">Flights</a>
+            <a href="#destinations">Destinations</a>
+            <a href="#why-us">Why SkyBook?</a>
+        </div>
+
+        <button class="login-btn" onclick="showLogin()">
+            Sign in
+        </button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="tag">✈ YOUR NEXT ADVENTURE STARTS HERE</div>
+
+            <h1>Explore the world,<br>one flight at a time.</h1>
+
+            <p>
+                Discover new destinations, compare flight options,
+                and plan your next journey with ease.
+            </p>
+        </div>
+    </section>
+
+    <!-- BOOKING FORM -->
+    <div class="booking-wrapper">
+        <div class="booking-card">
+
+            <div class="trip-options">
+                <label>
+                    <input type="radio" name="trip" value="round" checked
+                           onchange="toggleReturnDate()">
+                    Round trip
+                </label>
+
+                <label>
+                    <input type="radio" name="trip" value="oneway"
+                           onchange="toggleReturnDate()">
+                    One way
+                </label>
+            </div>
+
+            <form id="flight-form">
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="from">From</label>
+
+                        <div class="location-row">
+                            <input
+                                type="text"
+                                id="from"
+                                list="cities"
+                                placeholder="Departure city"
+                                value="Hyderabad"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="swap-btn"
+                                onclick="swapLocations()"
+                                title="Swap locations"
+                            >⇄</button>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="to">To</label>
+
+                        <input
+                            type="text"
+                            id="to"
+                            list="cities"
+                            placeholder="Destination city"
+                            value="Delhi"
+                            required
+                        >
+                    </div>
+
+                    <datalist id="cities">
+                        <option value="Hyderabad">
+                        <option value="Delhi">
+                        <option value="Mumbai">
+                        <option value="Bengaluru">
+                        <option value="Chennai">
+                        <option value="Kolkata">
+                        <option value="Pune">
+                        <option value="Goa">
+                        <option value="Kochi">
+                        <option value="Jaipur">
+                        <option value="Dubai">
+                        <option value="Singapore">
+                        <option value="London">
+                        <option value="New York">
+                    </datalist>
+
+                    <div class="field">
+                        <label for="departure">Departure</label>
+                        <input type="date" id="departure" required>
+                    </div>
+
+                    <div class="field" id="return-field">
+                        <label for="return">Return</label>
+                        <input type="date" id="return">
+                    </div>
+
+                    <div class="field">
+                        <label for="adults">Adults</label>
+                        <select id="adults">
+                            <option value="1">1 Adult</option>
+                            <option value="2" selected>2 Adults</option>
+                            <option value="3">3 Adults</option>
+                            <option value="4">4 Adults</option>
+                            <option value="5">5 Adults</option>
+                            <option value="6">6 Adults</option>
+                            <option value="7">7 Adults</option>
+                            <option value="8">8 Adults</option>
+                            <option value="9">9 Adults</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="children">Children</label>
+                        <select id="children">
+                            <option value="0">0 Children</option>
+                            <option value="1">1 Child</option>
+                            <option value="2">2 Children</option>
+                            <option value="3">3 Children</option>
+                            <option value="4">4 Children</option>
+                            <option value="5">5 Children</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="travel-class">Travel class</label>
+                        <select id="travel-class">
+                            <option value="Economy">Economy</option>
+                            <option value="Premium Economy">Premium Economy</option>
+                            <option value="Business">Business</option>
+                            <option value="First Class">First Class</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="search-row">
+                    <button type="submit" class="search-btn">
+                        🔍 Search Flights
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+
+        <!-- POPULAR DESTINATIONS -->
+        <section id="destinations">
+            <div class="section-heading">
+                <div>
+                    <h2>Popular destinations</h2>
+                    <p>Find inspiration for your next getaway.</p>
+                </div>
+
+                <a href="#destinations" class="text-link">Explore places →</a>
+            </div>
+
+            <div class="destination-grid">
+
+                <article class="destination-card"
+                         onclick="selectDestination('Goa')">
+                    <img
+                        src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=700&q=80"
+                        alt="Beautiful beach in Goa"
+                        loading="lazy"
+                    >
+
+                    <div class="destination-info">
+                        <h3>Goa</h3>
+                        <p>Beaches & sunshine</p>
+                    </div>
+                </article>
+
+                <article class="destination-card"
+                         onclick="selectDestination('Mumbai')">
+                    <img
+                        src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=700&q=80"
+                        alt="Mumbai city skyline"
+                        loading="lazy"
+                    >
+
+                    <div class="destination-info">
+                        <h3>Mumbai</h3>
+                        <p>The city that never sleeps</p>
+                    </div>
+                </article>
+
+                <article class="destination-card"
+                         onclick="selectDestination('Dubai')">
+                    <img
+                        src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=700&q=80"
+                        alt="Dubai skyline"
+                        loading="lazy"
+                    >
+
+                    <div class="destination-info">
+                        <h3>Dubai</h3>
+                        <p>Luxury & adventure</p>
+                    </div>
+                </article>
+
+                <article class="destination-card"
+                         onclick="selectDestination('Singapore')">
+                    <img
+                        src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=700&q=80"
+                        alt="Singapore skyline"
+                        loading="lazy"
+                    >
+
+                    <div class="destination-info">
+                        <h3>Singapore</h3>
+                        <p>A city full of wonders</p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- FLIGHT SEARCH RESULTS -->
+        <section id="results-section">
+            <div class="section-heading">
+                <div>
+                    <h2>Available flights</h2>
+                    <p id="search-summary"></p>
+                </div>
+            </div>
+
+            <p class="results-note">
+                These are illustrative prices and schedules for demonstration.
+                They are not live airline offers.
+            </p>
+
+            <div class="results-list" id="results-list"></div>
+        </section>
+
+        <!-- BENEFITS -->
+        <section id="why-us">
+            <div class="section-heading" style="margin-top: 65px;">
+                <div>
+                    <h2>Travel with confidence</h2>
+                    <p>A simpler way to plan your next journey.</p>
+                </div>
+            </div>
+
+            <div class="benefits">
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Compare prices</h3>
+                    <p>
+                        Review different flight options and find
+                        one that suits your budget.
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Simple booking</h3>
+                    <p>
+                        An easy-to-use interface makes planning
+                        your next trip straightforward.
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌍</div>
+                    <h3>Discover places</h3>
+                    <p>
+                        Explore exciting destinations and
+                        find inspiration for your next adventure.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="logo" style="color: white;">
+            SkyBook.
+        </div>
+
+        <p>Your journey begins with a single search.</p>
+        <p>© 2026 SkyBook. Demonstration website.</p>
+    </footer>
+
+    <script>
+        const departureInput = document.getElementById("departure");
+        const returnInput = document.getElementById("return");
+        const returnField = document.getElementById("return-field");
+        const flightForm = document.getElementById("flight-form");
+
+        // Set today's date as the earliest departure date.
+        const today = new Date();
+        const todayString = [
+            today.getFullYear(),
+            String(today.getMonth() + 1).padStart(2, "0"),
+            String(today.getDate()).padStart(2, "0")
+        ].join("-");
+
+        departureInput.min = todayString;
+        returnInput.min = todayString;
+
+        departureInput.addEventListener("change", function () {
+            returnInput.min = departureInput.value;
+
+            if (
+                returnInput.value &&
+                returnInput.value < departureInput.value
+            ) {
+                returnInput.value = departureInput.value;
+            }
+        });
+
+        // Show or hide the return date for one-way trips.
+        function toggleReturnDate() {
+            const tripType = document.querySelector(
+                'input[name="trip"]:checked'
+            ).value;
+
+            const isRoundTrip = tripType === "round";
+
+            returnField.style.display = isRoundTrip ? "block" : "none";
+            returnInput.required = isRoundTrip;
+
+            if (!isRoundTrip) {
+                returnInput.value = "";
+            }
+        }
+
+        // Swap departure and destination.
+        function swapLocations() {
+            const from = document.getElementById("from");
+            const to = document.getElementById("to");
+
+            const temp = from.value;
+            from.value = to.value;
+            to.value = temp;
+        }
+
+        // Clicking a destination fills the search form.
+        function selectDestination(city) {
+            document.getElementById("to").value = city;
+
+            document.querySelector(".booking-wrapper").scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+
+        // Display demonstration flight results.
+        flightForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const from = document.getElementById("from").value.trim();
+            const to = document.getElementById("to").value.trim();
+            const departure = departureInput.value;
+            const returnDate = returnInput.value;
+
+            const adults = Number(
+                document.getElementById("adults").value
+            );
+
+            const children = Number(
+                document.getElementById("children").value
+            );
+
+            const travelClass = document.getElementById(
+                "travel-class"
+            ).value;
+
+            const tripType = document.querySelector(
+                'input[name="trip"]:checked'
+            ).value;
+
+            if (from.toLowerCase() === to.toLowerCase()) {
+                alert("Departure and destination cannot be the same.");
+                return;
+            }
+
+            if (tripType === "round" && returnDate < departure) {
+                alert("Return date must be on or after departure date.");
+                return;
+            }
+
+            if (adults + children < 1) {
+                alert("Please select at least one passenger.");
+                return;
+            }
+
+            const resultsSection = document.getElementById("results-section");
+            const resultsList = document.getElementById("results-list");
+            const summary = document.getElementById("search-summary");
+
+            const formattedDate = new Date(
+                departure + "T12:00:00"
+            ).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            });
+
+            summary.textContent =
+                from + " → " + to +
+                " · " + formattedDate +
+                " · " + (adults + children) + " passenger(s)" +
+                " · " + travelClass;
+
+            const flights = [
+                {
+                    airline: "SkyWings",
+                    code: "SW 204",
+                    depart: "06:15",
+                    arrive: "08:25",
+                    duration: "2h 10m",
+                    price: 4599
+                },
+                {
+                    airline: "Air Horizon",
+                    code: "AH 318",
+                    depart: "10:40",
+                    arrive: "13:05",
+                    duration: "2h 25m",
+                    price: 5299
+                },
+                {
+                    airline: "CloudAir",
+                    code: "CA 512",
+                    depart: "16:20",
+                    arrive: "18:35",
+                    duration: "2h 15m",
+                    price: 4899
+                }
+            ];
+
+            // Demonstration prices vary by travel class.
+            const classMultipliers = {
+                "Economy": 1,
+                "Premium Economy": 1.5,
+                "Business": 3,
+                "First Class": 5
+            };
+
+            const multiplier = classMultipliers[travelClass];
+            const passengerCount = adults + children;
+
+            resultsList.innerHTML = flights.map(function (flight, index) {
+                const price = Math.round(
+                    flight.price * multiplier * passengerCount
+                );
+
+                return `
+                    <article class="flight-card">
+                        <div class="airline-name">
+                            ✈ ${flight.airline}
+                            <small>${flight.code} · ${travelClass}</small>
+                        </div>
+
+                        <div>
+                            <div class="flight-time">${flight.depart}</div>
+                            <div class="flight-detail">${from}</div>
+                        </div>
+
+                        <div class="flight-duration">
+                            ${flight.duration}
+                            <div class="flight-line"></div>
+                            <span>Non-stop*</span>
+                        </div>
+
+                        <div>
+                            <div class="flight-time">${flight.arrive}</div>
+                            <div class="flight-detail">${to}</div>
+                        </div>
+
+                        <div>
+                            <div class="flight-price">
+                                ₹${price.toLocaleString("en-IN")}
+                            </div>
+                            <div class="flight-detail">Illustrative total</div>
+                            <button
+                                class="book-btn"
+                                onclick="bookFlight('${flight.airline}', ${price})"
+                            >
+                                Select flight
+                            </button>
+                        </div>
+                    </article>
+                `;
+            }).join("");
+
+            resultsSection.style.display = "block";
+
+            resultsSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        });
+
+        // Demo selection only; no ticket is actually booked.
+        function bookFlight(airline, price) {
+            alert(
+                "You selected " + airline +
+                ".\nIllustrative total: ₹" +
+                price.toLocaleString("en-IN") +
+                "\n\nThis is a demo website. No ticket has been booked."
+            );
+        }
+
+        function showLogin() {
+            alert(
+                "Welcome to SkyBook!\n\n" +
+                "Sign-in functionality can be added with a backend."
+            );
+        }
+
+        // Initialize the trip form.
+        toggleReturnDate();
+    </script>
+
+</body>
+</html>

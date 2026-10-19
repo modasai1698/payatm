@@ -1,0 +1,16 @@
+services:
+  bus:
+    container_name: bus_cont
+    image: bus_img
+    ports:
+      - "1111:80"
+  movie:
+    container_name: movie_cont
+    image: movie_img
+    ports:
+      - "2222:80"
+  flight:
+    container_name: flight_cont
+    image: flight_img
+    ports:
+      - "3333:80"
